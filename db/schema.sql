@@ -1,3 +1,4 @@
+\c postgres;
 -- Create a new organization database
 DROP DATABASE IF EXISTS org_db;
 CREATE DATABASE org_db;
@@ -29,3 +30,6 @@ CREATE TABLE employee (
     FOREIGN KEY (role_id) REFERENCES role(id),
     FOREIGN KEY (manager_id) REFERENCES employee(id)
 );
+
+-- Run seeds file
+\i seeds.sql;
