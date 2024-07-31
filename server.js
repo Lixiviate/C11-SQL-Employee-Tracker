@@ -43,13 +43,16 @@ const mainMenu = () => {
     .then((answer) => {
       switch (answer.selection) {
         case "View all departments":
-          viewAllDept();
+          viewDepartments();
           break;
         case "View all roles":
+          viewRoles();
           break;
         case "View all employees":
+          viewEmployees();
           break;
         case "Add a department":
+          addDepartment();
           break;
         case "Add a role":
           break;
@@ -66,11 +69,44 @@ const mainMenu = () => {
 
 pool.connect();
 
-const viewAllDept = () => {
+const viewDepartments = () => {
   pool.query("SELECT * FROM department", function (err, res) {
-    console.log(res.rows);
+    console.table(res.rows);
     mainMenu();
   });
+};
+
+const viewRoles = () => {
+  pool.query("SELECT * FROM role", function (err, res) {
+    console.table(res.rows);
+    mainMenu();
+  });
+};
+
+const viewEmployees = () => {
+  pool.query("SELECT * FROM employee", function (err, res) {
+    console.table(res.rows);
+    mainMenu();
+  });
+};
+
+const addDepartment = () => {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "name",
+      message: "Enter the name of the new department:",
+    })
+    .then((answer) => {
+      pool.query(
+        "INSERT INTO department (name) VALUES ($1)",
+        [answer.name],
+        (err, res) => {
+          console.log(`Added ${res} to the database`);
+          mainMenu();
+        }
+      );
+    });
 };
 
 // Start the app
