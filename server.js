@@ -102,7 +102,11 @@ const addDepartment = () => {
         "INSERT INTO department (name) VALUES ($1)",
         [answer.name],
         (err, res) => {
-          console.log(`Added ${answer.name} to the database`);
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(`Added ${answer.name} to the database`);
+          }
           mainMenu();
         }
       );
