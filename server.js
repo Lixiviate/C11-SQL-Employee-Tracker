@@ -135,15 +135,97 @@ const addRole = () => {
         message: "Enter the Department ID of the new role:",
       },
     ])
-    .then((answers) => {
+    .then((answer) => {
       pool.query(
         "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
-        [answers.title, answers.salary, answers.department_id],
+        [answer.title, answer.salary, answer.department_id],
         (err, res) => {
           if (err) {
             console.log(err);
           } else {
-            console.log(`Added ${answers.title} to the database`);
+            console.log(`Added ${answer.title} to the database`);
+          }
+          mainMenu();
+        }
+      );
+    });
+};
+
+const addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "first_name",
+        message: "Enter the First Name of the new employee:",
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "Enter the Last Name of the new employee:",
+      },
+      {
+        type: "input",
+        name: "role_id",
+        message: "Enter the Role ID of the new employee:",
+      },
+      {
+        type: "input",
+        name: "manager_id",
+        message: "Enter the Manager ID of the new employee:",
+      },
+    ])
+    .then((answer) => {
+      pool.query(
+        "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)",
+        [
+          answer.first_name,
+          answer.last_name,
+          answer.role_id,
+          answer.manager_id,
+        ],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(
+              `Added ${answer.first_name} ${answer.last_name} to the database`
+            );
+          }
+          mainMenu();
+        }
+      );
+    });
+};
+
+const updateEmployeeRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Enter the title of the new role:",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Enter the salary of the new role:",
+      },
+      {
+        type: "input",
+        name: "department_id",
+        message: "Enter the Department ID of the new role:",
+      },
+    ])
+    .then((answer) => {
+      pool.query(
+        "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
+        [answer.title, answer.salary, answer.department_id],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(`Added ${answer.title} to the database`);
           }
           mainMenu();
         }
