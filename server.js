@@ -55,10 +55,13 @@ const mainMenu = () => {
           addDepartment();
           break;
         case "Add a role":
+          addRole();
           break;
         case "Add an employee":
+          addEmployee();
           break;
         case "Update an employee role":
+          updateEmployeeRole();
           break;
         case "Exit":
           pool.end();
@@ -106,6 +109,41 @@ const addDepartment = () => {
             console.log(err);
           } else {
             console.log(`Added ${answer.name} to the database`);
+          }
+          mainMenu();
+        }
+      );
+    });
+};
+
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Enter the title of the new role:",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Enter the salary of the new role:",
+      },
+      {
+        type: "input",
+        name: "department_id",
+        message: "Enter the Department ID of the new role:",
+      },
+    ])
+    .then((answers) => {
+      pool.query(
+        "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
+        [answers.title, answers.salary, answers.department_id],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(`Added ${answers.title} to the database`);
           }
           mainMenu();
         }
