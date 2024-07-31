@@ -102,7 +102,7 @@ const addDepartment = () => {
         "INSERT INTO department (name) VALUES ($1)",
         [answer.name],
         (err, res) => {
-          console.log(`Added ${res} to the database`);
+          console.log(`Added ${answer.name} to the database`);
           mainMenu();
         }
       );
