@@ -20,7 +20,7 @@ const pool = new Pool(
     host: "127.0.0.1",
     database: "org_db",
   },
-  console.log("Access to org_db established.")
+  console.warn("Access to org_db established.")
 );
 
 const mainMenu = () => {
@@ -106,9 +106,9 @@ const addDepartment = () => {
         [answer.name],
         (err, res) => {
           if (err) {
-            console.log(err);
+            console.error("Entry Failure:", err.message);
           } else {
-            console.log(`Added ${answer.name} to the database`);
+            console.warn(`Added the ${answer.name} department to the database`);
           }
           mainMenu();
         }
@@ -141,9 +141,9 @@ const addRole = () => {
         [answer.title, answer.salary, answer.department_id],
         (err, res) => {
           if (err) {
-            console.log(err);
+            console.error("Entry Failure:", err.message);
           } else {
-            console.log(`Added ${answer.title} to the database`);
+            console.warn(`Added ${answer.title} to the database`);
           }
           mainMenu();
         }
@@ -186,9 +186,9 @@ const addEmployee = () => {
         ],
         (err, res) => {
           if (err) {
-            console.log(err);
+            console.error("Entry Failure:", err.message);
           } else {
-            console.log(
+            console.warn(
               `Added ${answer.first_name} ${answer.last_name} to the database`
             );
           }
@@ -211,11 +211,6 @@ const updateEmployeeRole = () => {
         name: "salary",
         message: "Enter the salary of the new role:",
       },
-      {
-        type: "input",
-        name: "department_id",
-        message: "Enter the Department ID of the new role:",
-      },
     ])
     .then((answer) => {
       pool.query(
@@ -223,9 +218,9 @@ const updateEmployeeRole = () => {
         [answer.title, answer.salary, answer.department_id],
         (err, res) => {
           if (err) {
-            console.log(err);
+            console.error("Entry Failure:", err.message);
           } else {
-            console.log(`Added ${answer.title} to the database`);
+            console.warn(`Updated employee role in database.`);
           }
           mainMenu();
         }
