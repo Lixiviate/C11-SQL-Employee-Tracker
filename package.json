@@ -1,12 +1,12 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "A CLI app to manage company departments, roles, and employees",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Lixiviate",
   "license": "MIT",
   "dependencies": {
     "express": "^4.19.2",
