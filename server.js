@@ -35,37 +35,37 @@ const mainMenu = () => {
       name: "selection",
       message: "Please select an option:",
       choices: [
-        "View all employees",
-        "Add an employee",
-        "Update an employee role",
-        "View all roles",
-        "Add a role",
-        "View all departments",
-        "Add a department",
+        "View All Employees",
+        "Add Employee",
+        "Update Employee Role",
+        "View All Roles",
+        "Add Role",
+        "View All Departments",
+        "Add Department",
         "Exit",
       ],
     })
     .then((answer) => {
       switch (answer.selection) {
-        case "View all employees":
+        case "View All Employees":
           viewEmployees();
           break;
-        case "Add an employee":
+        case "Add Employee":
           addEmployee();
           break;
-        case "Update an employee role":
+        case "Update Employee Role":
           updateEmployeeRole();
           break;
-        case "View all roles":
+        case "View All Roles":
           viewRoles();
           break;
-        case "Add a role":
+        case "Add Role":
           addRole();
           break;
-        case "View all departments":
+        case "View All Departments":
           viewDepartments();
           break;
-        case "Add a department":
+        case "Add Department":
           addDepartment();
           break;
         case "Exit":
