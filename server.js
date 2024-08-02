@@ -27,7 +27,10 @@ const pool = new Pool(
 console.table(`
   ************************
   *-- EMPLOYEE TRACKER --*
-  ************************`);
+  ************************
+  
+----------------------------
+`);
 
 const mainMenu = () => {
   inquirer
