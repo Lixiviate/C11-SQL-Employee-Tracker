@@ -23,6 +23,11 @@ const pool = new Pool(
   console.warn("Access to org_db established.")
 );
 
+console.table(`
+  ************************
+  *-- EMPLOYEE TRACKER --*
+  ************************`);
+
 const mainMenu = () => {
   inquirer
     .prompt({
@@ -64,7 +69,9 @@ const mainMenu = () => {
           updateEmployeeRole();
           break;
         case "Exit":
+          console.warn("Exiting the app....");
           pool.end();
+          process.exit(0);
           break;
       }
     });
@@ -203,19 +210,19 @@ const updateEmployeeRole = () => {
     .prompt([
       {
         type: "input",
-        name: "title",
-        message: "Enter the title of the new role:",
+        name: "employee_id",
+        message: "Enter the Employee ID for the role you want to update:",
       },
       {
         type: "input",
-        name: "salary",
-        message: "Enter the salary of the new role:",
+        name: "role_id",
+        message: "Enter the new Role ID of the employee:",
       },
     ])
     .then((answer) => {
       pool.query(
-        "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
-        [answer.title, answer.salary, answer.department_id],
+        "UPDATE employee SET role_id = $1 WHERE id = $2",
+        [answer.role_id, answer.employee_id],
         (err, res) => {
           if (err) {
             console.error("Entry Failure:", err.message);
@@ -234,7 +241,3 @@ mainMenu();
 app.use((req, res) => {
   res.status(404).end();
 });
-
-app.listen(PORT, () =>
-  console.log(`Example app listening at http://localhost:${PORT}`)
-);
