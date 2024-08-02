@@ -1,5 +1,6 @@
 const express = require("express");
 const inquirer = require("inquirer");
+require("dotenv").config();
 const { Pool } = require("pg");
 const { database } = require("pg/lib/defaults");
 
@@ -15,10 +16,10 @@ app.use(express.urlencoded({ extended: false }));
 // Access org_db
 const pool = new Pool(
   {
-    user: "postgres",
-    password: "SQLpss",
-    host: "127.0.0.1",
-    database: "org_db",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
   },
   console.warn("Access to org_db established.")
 );
@@ -80,10 +81,31 @@ const mainMenu = () => {
 pool.connect();
 
 const viewEmployees = () => {
-  pool.query("SELECT * FROM employee", function (err, res) {
-    console.table(res.rows);
-    mainMenu();
-  });
+  pool.query(
+    `
+    SELECT 
+      employee.id AS employee_id,
+      employee.first_name,
+      employee.last_name,
+      role.title AS job_title,
+      department.name AS department,
+      role.salary,
+      manager.first_name AS manager_first_name,
+      manager.last_name AS manager_last_name
+    FROM
+      employee
+    LEFT JOIN
+      role ON employee.role_id = role.id
+    LEFT JOIN
+      department ON role.department_id = department.id
+    LEFT JOIN
+      employee AS manager ON employee.manager_id = manager.id
+    `,
+    function (err, res) {
+      console.table(res.rows);
+      mainMenu();
+    }
+  );
 };
 
 const addEmployee = () => {
@@ -164,10 +186,24 @@ const updateEmployeeRole = () => {
 };
 
 const viewRoles = () => {
-  pool.query("SELECT * FROM role", function (err, res) {
-    console.table(res.rows);
-    mainMenu();
-  });
+  pool.query(
+    `
+    SELECT
+      role.id AS role_id,
+      role.title AS role_title,
+      role.salary AS role_salary,
+      department.id AS department_id,
+      department.name AS department_name
+    FROM
+      role
+    LEFT JOIN
+      department ON role.department_id = department.id
+    `,
+    function (err, res) {
+      console.table(res.rows);
+      mainMenu();
+    }
+  );
 };
 
 const addRole = () => {
