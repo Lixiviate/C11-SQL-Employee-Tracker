@@ -35,38 +35,38 @@ const mainMenu = () => {
       name: "selection",
       message: "Please select an option:",
       choices: [
-        "View all departments",
-        "View all roles",
         "View all employees",
-        "Add a department",
-        "Add a role",
         "Add an employee",
         "Update an employee role",
+        "View all roles",
+        "Add a role",
+        "View all departments",
+        "Add a department",
         "Exit",
       ],
     })
     .then((answer) => {
       switch (answer.selection) {
-        case "View all departments":
-          viewDepartments();
-          break;
-        case "View all roles":
-          viewRoles();
-          break;
         case "View all employees":
           viewEmployees();
-          break;
-        case "Add a department":
-          addDepartment();
-          break;
-        case "Add a role":
-          addRole();
           break;
         case "Add an employee":
           addEmployee();
           break;
         case "Update an employee role":
           updateEmployeeRole();
+          break;
+        case "View all roles":
+          viewRoles();
+          break;
+        case "Add a role":
+          addRole();
+          break;
+        case "View all departments":
+          viewDepartments();
+          break;
+        case "Add a department":
+          addDepartment();
           break;
         case "Exit":
           console.warn("Exiting the app....");
@@ -79,83 +79,11 @@ const mainMenu = () => {
 
 pool.connect();
 
-const viewDepartments = () => {
-  pool.query("SELECT * FROM department", function (err, res) {
-    console.table(res.rows);
-    mainMenu();
-  });
-};
-
-const viewRoles = () => {
-  pool.query("SELECT * FROM role", function (err, res) {
-    console.table(res.rows);
-    mainMenu();
-  });
-};
-
 const viewEmployees = () => {
   pool.query("SELECT * FROM employee", function (err, res) {
     console.table(res.rows);
     mainMenu();
   });
-};
-
-const addDepartment = () => {
-  inquirer
-    .prompt({
-      type: "input",
-      name: "name",
-      message: "Enter the name of the new department:",
-    })
-    .then((answer) => {
-      pool.query(
-        "INSERT INTO department (name) VALUES ($1)",
-        [answer.name],
-        (err, res) => {
-          if (err) {
-            console.error("Entry Failure:", err.message);
-          } else {
-            console.warn(`Added the ${answer.name} department to the database`);
-          }
-          mainMenu();
-        }
-      );
-    });
-};
-
-const addRole = () => {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "Enter the title of the new role:",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "Enter the salary of the new role:",
-      },
-      {
-        type: "input",
-        name: "department_id",
-        message: "Enter the Department ID of the new role:",
-      },
-    ])
-    .then((answer) => {
-      pool.query(
-        "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
-        [answer.title, answer.salary, answer.department_id],
-        (err, res) => {
-          if (err) {
-            console.error("Entry Failure:", err.message);
-          } else {
-            console.warn(`Added ${answer.title} to the database`);
-          }
-          mainMenu();
-        }
-      );
-    });
 };
 
 const addEmployee = () => {
@@ -228,6 +156,78 @@ const updateEmployeeRole = () => {
             console.error("Entry Failure:", err.message);
           } else {
             console.warn(`Updated employee role in database.`);
+          }
+          mainMenu();
+        }
+      );
+    });
+};
+
+const viewRoles = () => {
+  pool.query("SELECT * FROM role", function (err, res) {
+    console.table(res.rows);
+    mainMenu();
+  });
+};
+
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "Enter the title of the new role:",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "Enter the salary of the new role:",
+      },
+      {
+        type: "input",
+        name: "department_id",
+        message: "Enter the Department ID of the new role:",
+      },
+    ])
+    .then((answer) => {
+      pool.query(
+        "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
+        [answer.title, answer.salary, answer.department_id],
+        (err, res) => {
+          if (err) {
+            console.error("Entry Failure:", err.message);
+          } else {
+            console.warn(`Added ${answer.title} to the database`);
+          }
+          mainMenu();
+        }
+      );
+    });
+};
+
+const viewDepartments = () => {
+  pool.query("SELECT * FROM department", function (err, res) {
+    console.table(res.rows);
+    mainMenu();
+  });
+};
+
+const addDepartment = () => {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "name",
+      message: "Enter the name of the new department:",
+    })
+    .then((answer) => {
+      pool.query(
+        "INSERT INTO department (name) VALUES ($1)",
+        [answer.name],
+        (err, res) => {
+          if (err) {
+            console.error("Entry Failure:", err.message);
+          } else {
+            console.warn(`Added the ${answer.name} department to the database`);
           }
           mainMenu();
         }
