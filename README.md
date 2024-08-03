@@ -7,12 +7,14 @@ A command-line application designed to manage a company's employee database. Its
 ## Features
 
 - **View All Employees**: Displays a table of all employees, including their IDs, names, job titles, departments, salaries, and managers.
+- **View Employees by Department**: Lists employees grouped by their respective departments.
 - **Add Employee**: Prompts for employee details and adds a new employee to the database.
 - **Update Employee Role**: Allows updating an employee's role based on their ID.
 - **View All Roles**: Lists all job roles, including role ID, title, salary, and department information.
 - **Add Role**: Prompts for role details and adds a new role to the database.
 - **View All Departments**: Lists all departments, showing department ID and name.
 - **Add Department**: Prompts for department name and adds a new department to the database.
+- **View Total Utilized Budget by Department**: Calculates and displays the current salary budget being used by department.
 - **Exit**: Exits the application.
 
 ## Usage
@@ -24,11 +26,13 @@ A command-line application designed to manage a company's employee database. Its
    - Create a PostgreSQL database named `org_db` (rename if needed).
    - Use the provided SQL schema to set up tables for `employee`, `role`, and `department`.
 
-3. **Run the Application**: Execute `node server.js` in your terminal to start the application. Use the arrow keys to navigate the menu and select options.
+3. **Run the Application**: Execute `npm start` in your terminal to start the application. Use the arrow keys to navigate the menu and select options.
 
 4. **Perform Actions**: Follow the on-screen prompts to view, add, or update employees, roles, and departments.
 
-## Example
+## Example(s)
+
+[Demo Video](https://drive.google.com/file/d/1xElCkefVpux2sOjWfLmoYHJaoP3Z2y20/view)
 
 ![Example](./images/example.png)
 

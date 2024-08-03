@@ -41,12 +41,14 @@ const mainMenu = () => {
       message: "Please select an option:",
       choices: [
         "View All Employees",
+        "View Employees by Department",
         "Add Employee",
         "Update Employee Role",
         "View All Roles",
         "Add Role",
         "View All Departments",
         "Add Department",
+        "View Total Utilized Budget by Department",
         "Exit",
       ],
     })
@@ -55,6 +57,9 @@ const mainMenu = () => {
       switch (answer.selection) {
         case "View All Employees":
           viewEmployees();
+          break;
+        case "View Employees by Department":
+          viewEmployeesByDepartment();
           break;
         case "Add Employee":
           addEmployee();
@@ -74,6 +79,9 @@ const mainMenu = () => {
         case "Add Department":
           addDepartment();
           break;
+        case "View Total Utilized Budget by Department":
+          viewDepartmentBudget();
+          break;
         case "Exit":
           console.warn("Exiting the app....");
           pool.end(); // Close DB connection
@@ -85,7 +93,7 @@ const mainMenu = () => {
 
 pool.connect(); // Establish DB connection
 
-// View all employees with their details
+// View all employees and see employee details
 const viewEmployees = () => {
   pool.query(
     `
@@ -109,6 +117,36 @@ const viewEmployees = () => {
     `,
     function (err, res) {
       console.table(res.rows);
+      mainMenu();
+    }
+  );
+};
+
+// View employees by department
+const viewEmployeesByDepartment = () => {
+  pool.query(
+    `
+    SELECT 
+      employee.id AS employee_id,
+      department.name AS department_name,
+      employee.first_name,
+      employee.last_name,
+      role.title AS job_title,
+      role.salary
+    FROM
+      employee
+    LEFT JOIN
+      role ON employee.role_id = role.id
+    LEFT JOIN
+      department ON role.department_id = department.id
+    ORDER BY department_name, employee_id
+    `,
+    function (err, res) {
+      if (err) {
+        console.error("Error fetching employees by department:", err.message);
+      } else {
+        console.table(res.rows);
+      }
       mainMenu();
     }
   );
@@ -284,6 +322,33 @@ const addDepartment = () => {
         }
       );
     });
+};
+
+// View total utilized budget by department
+const viewDepartmentBudget = () => {
+  pool.query(
+    `
+    SELECT 
+      department.name AS department_name,
+      SUM(role.salary) AS total_budget
+    FROM
+      employee
+    LEFT JOIN
+      role ON employee.role_id = role.id
+    LEFT JOIN
+      department ON role.department_id = department.id
+    GROUP BY department_name
+    ORDER BY department_name
+    `,
+    function (err, res) {
+      if (err) {
+        console.error("Error calculating department budget:", err.message);
+      } else {
+        console.table(res.rows);
+      }
+      mainMenu();
+    }
+  );
 };
 
 // Start the app by calling main menu
