@@ -35,15 +35,16 @@ A command-line application designed to manage a company's employee database. Its
 ## Source Code
 
 - Created by [Lixiviate](https://github.com/Lixiviate)
-- Code assistance from:
-  - [dotenvx Docs](https://dotenvx.com/docs/)
-  - [Express.js Docs](https://expressjs.com/)
-  - [Inquirer.js Docs](https://www.npmjs.com/package/inquirer/v/8.2.4)
-  - [node-postgres Docs](https://node-postgres.com/)
-  - [PostgreSQL Docs](https://www.postgresql.org/docs/)
+- Code Assistance:
   - [MDN Web Docs](https://developer.mozilla.org/en-US/)
   - [W3Schools](https://www.w3schools.com/)
   - [edX Xpert Learning Assistant](https://www.edx.org/)
+- Development Resources:
+  - [dotenv](https://www.npmjs.com/package/dotenv)
+  - [Express.js](https://www.npmjs.com/package/express)
+  - [Inquirer.js](https://www.npmjs.com/package/inquirer/v/8.2.4)
+  - [node-postgres](https://www.npmjs.com/package/pg)
+  - [PostgreSQL](https://www.postgresql.org/)
 
 ## License
 
