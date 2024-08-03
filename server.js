@@ -1,11 +1,10 @@
+// Import necessary modules
 const express = require("express");
 const inquirer = require("inquirer");
-require("dotenv").config();
-const { Pool } = require("pg");
-const { database } = require("pg/lib/defaults");
-
-const PORT = process.env.PORT || 3001;
 const app = express();
+const { Pool } = require("pg");
+// Load environment variables
+require("dotenv").config();
 
 // Middleware for the parsing of JSON data
 app.use(express.json());
@@ -13,7 +12,7 @@ app.use(express.json());
 // Does this need to be false?
 app.use(express.urlencoded({ extended: false }));
 
-// Access org_db
+// Connect to PostgreSQL database
 const pool = new Pool(
   {
     user: process.env.DB_USER,
@@ -24,6 +23,7 @@ const pool = new Pool(
   console.warn("Access to org_db established.")
 );
 
+// Display application banner
 console.table(`
   ************************
   *-- EMPLOYEE TRACKER --*
@@ -32,6 +32,7 @@ console.table(`
 ----------------------------
 `);
 
+// Main menu function using inquirer
 const mainMenu = () => {
   inquirer
     .prompt({
@@ -50,6 +51,7 @@ const mainMenu = () => {
       ],
     })
     .then((answer) => {
+      // Handle menu selection
       switch (answer.selection) {
         case "View All Employees":
           viewEmployees();
@@ -74,15 +76,16 @@ const mainMenu = () => {
           break;
         case "Exit":
           console.warn("Exiting the app....");
-          pool.end();
-          process.exit(0);
+          pool.end(); // Close DB connection
+          process.exit(0); // Exit application
           break;
       }
     });
 };
 
-pool.connect();
+pool.connect(); // Establish DB connection
 
+// View all employees with their details
 const viewEmployees = () => {
   pool.query(
     `
@@ -111,6 +114,7 @@ const viewEmployees = () => {
   );
 };
 
+// Add a new employee
 const addEmployee = () => {
   inquirer
     .prompt([
@@ -136,6 +140,7 @@ const addEmployee = () => {
       },
     ])
     .then((answer) => {
+      // Insert new employee into DB
       pool.query(
         "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)",
         [
@@ -158,6 +163,7 @@ const addEmployee = () => {
     });
 };
 
+// Update an employee's role
 const updateEmployeeRole = () => {
   inquirer
     .prompt([
@@ -173,6 +179,7 @@ const updateEmployeeRole = () => {
       },
     ])
     .then((answer) => {
+      // Update role in DB
       pool.query(
         "UPDATE employee SET role_id = $1 WHERE id = $2",
         [answer.role_id, answer.employee_id],
@@ -188,6 +195,7 @@ const updateEmployeeRole = () => {
     });
 };
 
+// View all roles with department info
 const viewRoles = () => {
   pool.query(
     `
@@ -209,6 +217,7 @@ const viewRoles = () => {
   );
 };
 
+// Add a new role
 const addRole = () => {
   inquirer
     .prompt([
@@ -229,6 +238,7 @@ const addRole = () => {
       },
     ])
     .then((answer) => {
+      // Insert new role into DB
       pool.query(
         "INSERT INTO role (title, salary, department_id) VALUES ($1, $2, $3)",
         [answer.title, answer.salary, answer.department_id],
@@ -244,6 +254,7 @@ const addRole = () => {
     });
 };
 
+// View all departments
 const viewDepartments = () => {
   pool.query("SELECT * FROM department", function (err, res) {
     console.table(res.rows);
@@ -251,6 +262,7 @@ const viewDepartments = () => {
   });
 };
 
+// Add a new department
 const addDepartment = () => {
   inquirer
     .prompt({
@@ -274,9 +286,10 @@ const addDepartment = () => {
     });
 };
 
-// Start the app
+// Start the app by calling main menu
 mainMenu();
 
+// Handle 404 errors
 app.use((req, res) => {
   res.status(404).end();
 });
